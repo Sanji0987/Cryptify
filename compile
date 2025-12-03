@@ -1,0 +1,5 @@
+#!/bin/bash
+# Compile all Java source files to build directory
+mkdir -p build
+javac -d build --module-path lib --add-modules javafx.controls *.java
+echo "Compiled to build/ directory"

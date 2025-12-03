@@ -1,0 +1,52 @@
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
+
+public class Main extends Application {
+
+    // --- Class Member Variable ---
+    // We place it here so it can be accessed and UPDATED by any method in this class,
+    // including the event handler below.
+    private String filePath = null;
+
+    @Override
+    public void start(final Stage primaryStage) {
+        StackPane root = new StackPane();
+        Button addFileBtn = new Button("Add File");
+
+        addFileBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Select Any File");
+                fileChooser.getExtensionFilters().add( new FileChooser.ExtensionFilter("Text Files", "*.txt")  );
+                File selectedFile = fileChooser.showOpenDialog(primaryStage);
+
+                if (selectedFile != null) {
+                    // Update the class member variable
+                    filePath = selectedFile.getAbsolutePath();
+                    System.out.println("FilePath variable updated to: " + filePath);
+                }
+            }
+        });
+
+        root.getChildren().add(addFileBtn);
+
+        Scene scene = new Scene(root, 400, 300, Color.WHITE);
+        primaryStage.setTitle("CryptoDrop");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}

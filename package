@@ -1,0 +1,39 @@
+#!/bin/bash
+# Package JavaFX application into executable JAR
+
+echo "📦 Packaging Encryptify..."
+
+# Compile first
+./compile
+
+# Create manifest file
+cat > build/MANIFEST.MF << EOF
+Manifest-Version: 1.0
+Main-Class: Main
+Class-Path: lib/javafx.base.jar lib/javafx.controls.jar lib/javafx.graphics.jar
+EOF
+
+# Create JAR file
+cd build
+jar cfm ../encryptify.jar MANIFEST.MF *.class
+cd ..
+
+# Create launcher script
+cat > encryptify << 'EOF'
+#!/bin/bash
+# Encryptify Launcher
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+java --module-path "$DIR/lib" --add-modules javafx.controls -jar "$DIR/encryptify.jar" "$@"
+EOF
+
+chmod +x encryptify
+
+echo "✅ Package created!"
+echo ""
+echo "📁 Created files:"
+echo "   - encryptify.jar    (the application)"
+echo "   - encryptify        (launcher script)"
+echo ""
+echo "🚀 To run: ./encryptify"
+echo "📤 To share: Copy encryptify.jar + encryptify + lib/ folder"

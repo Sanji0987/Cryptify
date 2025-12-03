@@ -1,0 +1,5 @@
+#!/bin/bash
+# Encryptify Launcher
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+java --module-path "$DIR/lib" --add-modules javafx.controls -jar "$DIR/encryptify.jar" "$@"
