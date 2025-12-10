@@ -1,12 +1,17 @@
 #!/bin/bash
-# Package JavaFX application into executable JAR
 
 echo "📦 Packaging Encryptify..."
 
-# Compile first
+RELEASE_DATE=$(date +%Y-%m-%d)
+RELEASE_DIR="release/${RELEASE_DATE}"
+
+mkdir -p "${RELEASE_DIR}"
+
+echo "📅 Release Date: ${RELEASE_DATE}"
+echo "📂 Output: ${RELEASE_DIR}"
+
 ./compile
 
-# Create manifest file
 cat > build/MANIFEST.MF << EOF
 Manifest-Version: 1.0
 Main-Class: Main
@@ -18,8 +23,14 @@ cd build
 jar cfm ../encryptify.jar MANIFEST.MF *.class
 cd ..
 
-# Create launcher script
-cat > encryptify << 'EOF'
+# Copy JAR to release folder
+cp encryptify.jar "${RELEASE_DIR}/"
+
+# Copy lib folder to release
+cp -r lib "${RELEASE_DIR}/"
+
+# Create launcher script in release folder
+cat > "${RELEASE_DIR}/encryptify" << 'EOF'
 #!/bin/bash
 # Encryptify Launcher
 
@@ -27,13 +38,71 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 java --module-path "$DIR/lib" --add-modules javafx.controls -jar "$DIR/encryptify.jar" "$@"
 EOF
 
-chmod +x encryptify
+chmod +x "${RELEASE_DIR}/encryptify"
 
-echo "✅ Package created!"
+# Create Windows launcher in release folder
+cat > "${RELEASE_DIR}/encryptify.bat" << 'EOF'
+@echo off
+setlocal
+
+REM Get the directory where this script is located
+set "DIR=%~dp0"
+
+REM Check if Java is installed
+java -version >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo ERROR: Java is not installed or not in PATH!
+    echo Please install Java 11 or higher from https://adoptium.net/
+    pause
+    exit /b 1
+)
+
+REM Run the application
+echo Starting CryptoDrop...
+java --module-path "%DIR%lib" --add-modules javafx.controls -jar "%DIR%encryptify.jar" %*
+
+REM Check if application exited with error
+if %ERRORLEVEL% neq 0 (
+    echo.
+    echo Application exited with error code: %ERRORLEVEL%
+    pause
+)
+
+endlocal
+EOF
+
+# Create README in release folder
+cat > "${RELEASE_DIR}/README.txt" << EOF
+CryptoDrop - File Encryption Tool
+Release: ${RELEASE_DATE}
+
+INSTALLATION:
+  No installation needed! Just run the launcher.
+
+RUNNING THE APPLICATION:
+  Linux/Mac: ./encryptify
+  Windows:   encryptify.bat
+
+REQUIREMENTS:
+  - Java 11 or higher
+  - JavaFX libraries (included in lib/ folder)
+
+FILES:
+  - encryptify.jar  : The application
+  - encryptify      : Linux/Mac launcher
+  - encryptify.bat  : Windows launcher
+  - lib/            : JavaFX dependencies
+
+USAGE:
+  1. Run the application
+  2. Drag and drop .txt files into the window
+  3. Set an encryption key
+  4. Choose cipher (Caesar, XOR, or AES)
+  5. Encrypt or decrypt your files
+
+For more information, visit the project repository.
+EOF
+
 echo ""
-echo "📁 Created files:"
-echo "   - encryptify.jar    (the application)"
-echo "   - encryptify        (launcher script)"
+echo "✅ Package created successfully!"
 echo ""
-echo "🚀 To run: ./encryptify"
-echo "📤 To share: Copy encryptify.jar + encryptify + lib/ folder"

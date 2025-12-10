@@ -1,5 +1,0 @@
-"Don't you understand?" he asked, pausing for effect.
-
-"It's not just about the encryption's strength; it's about the key management."
-
-She sighed, tapping the table. "I'm aware. Let's run the test again—this time, strictly by the book."

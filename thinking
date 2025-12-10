@@ -1,6 +1,0 @@
-1) need to encryptor , decryptor and a key manager
-2) need to add 3 types of cipher , ceasers ,xor cipher and then AES cipher
-3)need to add error handling for wrong file , wrong key , etc 
-4) add a sorter using comparable interface to sort the textfile with most and least data using 
-char ig (use file size)
-

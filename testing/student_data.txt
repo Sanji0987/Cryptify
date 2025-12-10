@@ -1,0 +1,19 @@
+========================================
+     STUDENT INFORMATION (SAMPLE)
+========================================
+
+Name: John Doe
+ID: 2024CS0123
+Course: Computer Science - OOP Module
+
+Project Title: CryptoDrop File Encryptor
+Technologies: Java, JavaFX, Cryptography
+
+Features Implemented:
+- Drag and drop file interface
+- Three encryption algorithms (Caesar, XOR, AES-GCM)
+- Password-based key derivation using SHA-256
+- File header for cipher identification
+- Factory pattern for cipher selection
+
+Grade: A+ (Encryption works perfectly!)

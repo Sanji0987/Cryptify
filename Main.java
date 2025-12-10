@@ -182,7 +182,12 @@ public class Main extends Application {
                               DialogHelper.showError("No Key Set", "Please set a decryption key first!");
                               return;
                         }
-                        CryptoUtils.decryptAuto(new File(selectedFile), keyManager.getKey(), uiFileList);
+                        try {
+                              CryptoHelper.decryptFile(new File(selectedFile), keyManager.getKey());
+                              DialogHelper.showSuccess("Decryption Complete", "File decrypted successfully!");
+                        } catch (Exception e) {
+                              DialogHelper.showError("Decryption Error", e.getMessage());
+                        }
                   }
             });
 

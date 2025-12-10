@@ -1,0 +1,19 @@
+Hello World!
+
+This is a simple test file to demonstrate file encryption.
+
+Key Features of CryptoDrop:
+1. User-friendly drag-and-drop interface
+2. Multiple cipher algorithms
+3. Secure password hashing
+4. Automatic cipher detection on decrypt
+
+Try encrypting this file with different ciphers:
+- Caesar Cipher: Simple character shifting
+- XOR Cipher: Fast bitwise operations  
+- AES-GCM: Industry-standard encryption with authentication
+
+After encryption, you can decrypt it using the same password!
+
+Testing... 1, 2, 3!
+ABC xyz 123

@@ -40,12 +40,22 @@ public class CipherSelector {
                                     "Do you want to continue?");
 
                     if (confirmed) {
-                        CryptoUtils.encryptCaesar(file, key, fileList);
+                        try {
+                            CryptoHelper.encryptFile(file, key, (byte) 1);
+                            DialogHelper.showSuccess("Caesar Encryption", "File encrypted successfully!");
+                        } catch (Exception e) {
+                            DialogHelper.showError("Encryption Error", e.getMessage());
+                        }
                         cipherStage.close();
                     }
                     // If canceled, dialog just closes and returns to cipher selection
                 } else {
-                    CryptoUtils.decryptCaesar(file, key, fileList);
+                    try {
+                        CryptoHelper.decryptFile(file, key);
+                        DialogHelper.showSuccess("Caesar Decryption", "File decrypted successfully!");
+                    } catch (Exception e) {
+                        DialogHelper.showError("Decryption Error", e.getMessage());
+                    }
                     cipherStage.close();
                 }
             }
@@ -64,12 +74,22 @@ public class CipherSelector {
                                     "Do you want to continue?");
 
                     if (confirmed) {
-                        CryptoUtils.encryptXOR(file, key, fileList);
+                        try {
+                            CryptoHelper.encryptFile(file, key, (byte) 2);
+                            DialogHelper.showSuccess("XOR Encryption", "File encrypted successfully!");
+                        } catch (Exception e) {
+                            DialogHelper.showError("Encryption Error", e.getMessage());
+                        }
                         cipherStage.close();
                     }
                     // If canceled, dialog just closes and returns to cipher selection
                 } else {
-                    CryptoUtils.decryptXOR(file, key, fileList);
+                    try {
+                        CryptoHelper.decryptFile(file, key);
+                        DialogHelper.showSuccess("XOR Decryption", "File decrypted successfully!");
+                    } catch (Exception e) {
+                        DialogHelper.showError("Decryption Error", e.getMessage());
+                    }
                     cipherStage.close();
                 }
             }
@@ -81,9 +101,19 @@ public class CipherSelector {
             @Override
             public void handle(ActionEvent event) {
                 if (isEncrypting) {
-                    CryptoUtils.encryptAES(file, key, fileList);
+                    try {
+                        CryptoHelper.encryptFile(file, key, (byte) 3);
+                        DialogHelper.showSuccess("AES Encryption", "File encrypted successfully!");
+                    } catch (Exception e) {
+                        DialogHelper.showError("Encryption Error", e.getMessage());
+                    }
                 } else {
-                    CryptoUtils.decryptAES(file, key, fileList);
+                    try {
+                        CryptoHelper.decryptFile(file, key);
+                        DialogHelper.showSuccess("AES Decryption", "File decrypted successfully!");
+                    } catch (Exception e) {
+                        DialogHelper.showError("Decryption Error", e.getMessage());
+                    }
                 }
                 cipherStage.close();
             }
