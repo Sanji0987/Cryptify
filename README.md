@@ -1,4 +1,4 @@
-# Encryptify
+# Cryptify
 
 A simple file encryption application with Caesar, XOR, and AES encryption support.
 
@@ -6,24 +6,24 @@ A simple file encryption application with Caesar, XOR, and AES encryption suppor
 
 ### Linux / macOS
 1. Extract the archive
-2. Run: `./encryptify`
+2. Run: `./Cryptify`
 
 ### Windows
 1. Extract the archive
 2. Install Java (if not installed): https://www.java.com/download
-3. Double-click `encryptify.bat`
+3. Double-click `Cryptify.bat`
 
 **OR** run from Command Prompt:
 ```
-encryptify.bat
+Cryptify.bat
 ```
 
 ## What You Need
 
 - Java 11 or higher
 - The files must stay together:
-  - `encryptify.jar`
-  - `encryptify` (Linux/Mac) or `encryptify.bat` (Windows)
+  - `Cryptify.jar`
+  - `Cryptify` (Linux/Mac) or `Cryptify.bat` (Windows)
   - `lib/` folder (contains JavaFX libraries)
 
 ## Features
