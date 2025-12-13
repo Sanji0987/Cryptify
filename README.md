@@ -24,7 +24,7 @@ Cryptify.bat
 - The files must stay together:
   - `Cryptify.jar`
   - `Cryptify` (Linux/Mac) or `Cryptify.bat` (Windows)
-  - `lib/` folder (contains JavaFX libraries)
+  - `lib/` folder (contains JavaFX libraries) (Extract from the 7z file)
 
 ## Features
 
