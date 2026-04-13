@@ -1,19 +1,11 @@
-/**
- * Centralized CSS styling for the CryptoDrop application.
- * All colors and styles in one place for easy theme customization.
- */
 public class Styles {
 
-    // ========== COLORS ==========
-
-    // Backgrounds
     public static final String COLOR_BG_MAIN = "#f5f5f5";
     public static final String COLOR_BG_WHITE = "white";
     public static final String COLOR_BG_HOVER = "#fafafa";
     public static final String COLOR_BG_BUTTON_HOVER = "#f8f8f8";
     public static final String COLOR_BG_BUTTON = "#e0e0e0";
 
-    // Borders
     public static final String COLOR_BORDER_LIGHT = "#e0e0e0";
     public static final String COLOR_BORDER_MEDIUM = "#d0d0d0";
     public static final String COLOR_BORDER_GRAY = "#ccc";
@@ -21,7 +13,6 @@ public class Styles {
     public static final String COLOR_BORDER_ACTIVE = "#666";
     public static final String COLOR_BORDER_BUTTON = "#bebebe";
 
-    // Text
     public static final String COLOR_TEXT_DARK = "#333";
     public static final String COLOR_TEXT_BLACK = "#000";
     public static final String COLOR_TEXT_GRAY = "#666";
@@ -29,11 +20,8 @@ public class Styles {
     public static final String COLOR_TEXT_LIGHT = "#aaa";
     public static final String COLOR_TEXT_GTK = "#2e3436";
 
-    // Status Colors
     public static final String COLOR_ERROR = "#cc0000";
     public static final String COLOR_INFO = "#3584e4";
-
-    // ========== MAIN WINDOW ==========
 
     public static final String MAIN_CONTAINER = "-fx-padding: 15; -fx-background-color: " + COLOR_BG_MAIN + ";";
 
@@ -50,8 +38,6 @@ public class Styles {
             "-fx-border-color: " + COLOR_BORDER_LIGHT + "; " +
             "-fx-border-width: 1; " +
             "-fx-font-size: 11px;";
-
-    // ========== DROP ZONE ==========
 
     public static final String DROP_ZONE_NORMAL = "-fx-background-color: " + COLOR_BG_WHITE + "; " +
             "-fx-border-color: " + COLOR_BORDER_DARK + "; " +
@@ -72,8 +58,6 @@ public class Styles {
     public static final String DROP_HINT = "-fx-font-size: 10px; " +
             "-fx-text-fill: " + COLOR_TEXT_LIGHT + ";";
 
-    // ========== BUTTONS ==========
-
     public static final String BUTTON_NORMAL = "-fx-background-color: " + COLOR_BG_WHITE + "; " +
             "-fx-text-fill: " + COLOR_TEXT_DARK + "; " +
             "-fx-border-color: " + COLOR_BORDER_GRAY + "; " +
@@ -91,8 +75,6 @@ public class Styles {
             "-fx-cursor: hand;";
 
     public static final String BUTTON_CONTAINER = "-fx-padding: 10 0 0 0;";
-
-    // ========== DIALOGS ==========
 
     public static final String DIALOG_CONTAINER = "-fx-background-color: " + COLOR_BG_MAIN + ";";
 

@@ -12,10 +12,12 @@ echo "📂 Output: ${RELEASE_DIR}"
 
 ./compile
 
+DEPS_DIR="dependencies"
+
 cat > build/MANIFEST.MF << EOF
 Manifest-Version: 1.0
 Main-Class: Main
-Class-Path: lib/javafx.base.jar lib/javafx.controls.jar lib/javafx.graphics.jar
+Class-Path: dependencies/javafx.base.jar dependencies/javafx.controls.jar dependencies/javafx.graphics.jar
 EOF
 
 # Create JAR file
@@ -26,8 +28,8 @@ cd ..
 # Copy JAR to release folder
 cp encryptify.jar "${RELEASE_DIR}/"
 
-# Copy lib folder to release
-cp -r lib "${RELEASE_DIR}/"
+# Copy dependency folder to release
+cp -r "${DEPS_DIR}" "${RELEASE_DIR}/"
 
 # Create launcher script in release folder
 cat > "${RELEASE_DIR}/encryptify" << 'EOF'
@@ -35,7 +37,7 @@ cat > "${RELEASE_DIR}/encryptify" << 'EOF'
 # Encryptify Launcher
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-java --module-path "$DIR/lib" --add-modules javafx.controls -jar "$DIR/encryptify.jar" "$@"
+java --module-path "$DIR/dependencies" --add-modules javafx.controls -jar "$DIR/encryptify.jar" "$@"
 EOF
 
 chmod +x "${RELEASE_DIR}/encryptify"
@@ -59,7 +61,7 @@ if %ERRORLEVEL% neq 0 (
 
 REM Run the application
 echo Starting CryptoDrop...
-java --module-path "%DIR%lib" --add-modules javafx.controls -jar "%DIR%encryptify.jar" %*
+java --module-path "%DIR%dependencies" --add-modules javafx.controls -jar "%DIR%encryptify.jar" %*
 
 REM Check if application exited with error
 if %ERRORLEVEL% neq 0 (
@@ -85,13 +87,13 @@ RUNNING THE APPLICATION:
 
 REQUIREMENTS:
   - Java 11 or higher
-  - JavaFX libraries (included in lib/ folder)
+  - JavaFX libraries (included in dependencies/ folder)
 
 FILES:
   - encryptify.jar  : The application
   - encryptify      : Linux/Mac launcher
   - encryptify.bat  : Windows launcher
-  - lib/            : JavaFX dependencies
+  - dependencies/   : JavaFX dependencies
 
 USAGE:
   1. Run the application

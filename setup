@@ -1,0 +1,77 @@
+#!/bin/bash
+
+set -e
+
+DEPS_DIR="dependencies"
+ARCHIVE="lib_archive.7z"
+
+mkdir -p "${DEPS_DIR}"
+
+if [ -f "${DEPS_DIR}/javafx.controls.jar" ]; then
+  echo "Dependencies already present in ${DEPS_DIR}/"
+  exit 0
+fi
+
+echo "Setting up JavaFX dependencies..."
+
+TMP_DIR="$(mktemp -d)"
+cleanup() {
+  rm -rf "${TMP_DIR}"
+}
+trap cleanup EXIT
+
+if [ -f "${ARCHIVE}" ]; then
+  7z x -y "${ARCHIVE}" -o"${TMP_DIR}" > /dev/null
+  if [ -d "${TMP_DIR}/lib" ]; then
+    cp -f "${TMP_DIR}/lib"/* "${DEPS_DIR}/"
+  fi
+fi
+
+for f in \
+  javafx.base.jar \
+  javafx.controls.jar \
+  javafx.fxml.jar \
+  javafx.graphics.jar \
+  javafx.media.jar \
+  javafx.properties \
+  javafx.swing.jar \
+  javafx-swt.jar \
+  javafx.web.jar \
+  jdk.jsobject.jar \
+  jfx.incubator.input.jar \
+  jfx.incubator.richtext.jar \
+  libavplugin-54.so \
+  libavplugin-56.so \
+  libavplugin-57.so \
+  libavplugin-ffmpeg-56.so \
+  libavplugin-ffmpeg-57.so \
+  libavplugin-ffmpeg-58.so \
+  libavplugin-ffmpeg-59.so \
+  libavplugin-ffmpeg-60.so \
+  libavplugin-ffmpeg-61.so \
+  libdecora_sse.so \
+  libfxplugins.so \
+  libglass.so \
+  libglassgtk3.so \
+  libgstreamer-lite.so \
+  libjavafx_font.so \
+  libjavafx_font_freetype.so \
+  libjavafx_font_pango.so \
+  libjavafx_iio.so \
+  libjfxmedia.so \
+  libjfxwebkit.so \
+  libprism_common.so \
+  libprism_es2.so \
+  libprism_sw.so; do
+  if [ -f "${f}" ]; then
+    mv -f "${f}" "${DEPS_DIR}/"
+  fi
+done
+
+if [ -f "${DEPS_DIR}/javafx.controls.jar" ]; then
+  echo "Dependencies ready in ${DEPS_DIR}/"
+else
+  echo "Setup failed: javafx.controls.jar not found"
+  echo "Add JavaFX files to ${DEPS_DIR}/ and rerun."
+  exit 1
+fi

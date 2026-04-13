@@ -1,5 +1,3 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,35 +10,20 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
-/**
- * Key manager implementation.
- * 
- * OOP Principle: Interface Implementation
- * Benefit: Allows for different key storage strategies (file, database, etc.)
- */
 public class KeyManager implements IKeyManager {
 
     private SecretKey secretKey;
 
-    /**
-     * Gets the current encryption key.
-     */
     @Override
     public SecretKey getKey() {
         return secretKey;
     }
 
-    /**
-     * Checks if a key has been set.
-     */
     @Override
     public boolean hasKey() {
         return secretKey != null;
     }
 
-    /**
-     * Derives an AES key from a password using SHA-256.
-     */
     @Override
     public SecretKey deriveKey(String password) {
         try {
@@ -53,9 +36,6 @@ public class KeyManager implements IKeyManager {
         }
     }
 
-    /**
-     * Shows the key entry window.
-     */
     @Override
     public void showKeyWindow(Stage owner) {
         Stage keyStage = new Stage();
@@ -68,17 +48,14 @@ public class KeyManager implements IKeyManager {
         keyField.setMaxWidth(200);
 
         Button confirmBtn = new Button("Confirm");
-        confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String rawKey = keyField.getText().trim();
-                if (rawKey.isEmpty()) {
-                    DialogHelper.showError("Invalid Key", "Encryption key cannot be empty!");
-                } else {
-                    secretKey = deriveKey(rawKey);
-                    if (secretKey != null) {
-                        keyStage.close();
-                    }
+        confirmBtn.setOnAction(event -> {
+            String rawKey = keyField.getText().trim();
+            if (rawKey.isEmpty()) {
+                DialogHelper.showError("Invalid Key", "Encryption key cannot be empty!");
+            } else {
+                secretKey = deriveKey(rawKey);
+                if (secretKey != null) {
+                    keyStage.close();
                 }
             }
         });

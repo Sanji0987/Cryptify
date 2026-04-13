@@ -1,10 +1,6 @@
-
-// --- CryptoDrop Main Application File (Full Refresh) ---
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,21 +18,18 @@ import java.io.File;
 
 public class Main extends Application {
 
-      private ObservableList<String> uiFileList = FXCollections.observableArrayList();
+      private final ObservableList<String> uiFileList = FXCollections.observableArrayList();
       private FileManager fileManager;
       private KeyManager keyManager;
 
       @Override
       public void start(Stage primaryStage) {
-            // Initialize managers
             fileManager = new FileManager(uiFileList);
             keyManager = new KeyManager();
 
-            // Main horizontal container
             HBox mainContainer = new HBox(15);
             mainContainer.setStyle(Styles.MAIN_CONTAINER);
 
-            // ===== LEFT SIDE: File List =====
             VBox leftPanel = new VBox(10);
             leftPanel.setPrefWidth(350);
             leftPanel.setStyle(Styles.LEFT_PANEL);
@@ -50,29 +43,17 @@ public class Main extends Application {
 
             Button clearListBtn = new Button("Clear All");
             applyButtonStyle(clearListBtn);
-            clearListBtn.setOnAction(new EventHandler<ActionEvent>() {
-                  @Override
-                  public void handle(ActionEvent event) {
-                        fileManager.clearAll();
-                  }
-            });
+            clearListBtn.setOnAction(event -> fileManager.clearAll());
 
             Button deleteBtn = new Button("Delete Selected");
             applyButtonStyle(deleteBtn);
-            deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
-                  @Override
-                  public void handle(ActionEvent event) {
-                        fileManager.deleteSelected(fileListView);
-                  }
-            });
+            deleteBtn.setOnAction(event -> fileManager.deleteSelected(fileListView));
 
             leftPanel.getChildren().addAll(fileListLabel, fileListView, clearListBtn, deleteBtn);
 
-            // ===== RIGHT SIDE: Drag Zone + Buttons =====
             VBox rightPanel = new VBox(12);
             rightPanel.setPrefWidth(350);
 
-            // Drag zone
             VBox dropZone = new VBox();
             dropZone.setPrefHeight(160);
             dropZone.setAlignment(Pos.CENTER);
@@ -86,115 +67,84 @@ public class Main extends Application {
 
             dropZone.getChildren().addAll(dropLabel, dropHint);
 
-            dropZone.setOnDragOver(new EventHandler<DragEvent>() {
-                  @Override
-                  public void handle(DragEvent event) {
-                        if (event.getDragboard().hasFiles()) {
-                              event.acceptTransferModes(TransferMode.COPY);
-                              dropZone.setStyle(Styles.DROP_ZONE_ACTIVE);
-                        }
-                        event.consume();
+            dropZone.setOnDragOver(event -> {
+                  if (event.getDragboard().hasFiles()) {
+                        event.acceptTransferModes(TransferMode.COPY);
+                        dropZone.setStyle(Styles.DROP_ZONE_ACTIVE);
                   }
+                  event.consume();
             });
 
-            dropZone.setOnDragExited(new EventHandler<DragEvent>() {
-                  @Override
-                  public void handle(DragEvent event) {
-                        dropZone.setStyle(Styles.DROP_ZONE_NORMAL);
-                        event.consume();
-                  }
+            dropZone.setOnDragExited(event -> {
+                  dropZone.setStyle(Styles.DROP_ZONE_NORMAL);
+                  event.consume();
             });
 
-            dropZone.setOnDragDropped(new EventHandler<DragEvent>() {
-                  @Override
-                  public void handle(DragEvent event) {
-                        Dragboard db = event.getDragboard();
-                        boolean success = false;
-                        if (db.hasFiles()) {
-                              success = true;
-                              for (File file : db.getFiles()) {
-                                    String name = file.getName().toLowerCase();
-                                    if (name.endsWith(".txt") || name.endsWith(".enc")) {
-                                          uiFileList.add(file.getAbsolutePath());
-                                          fileManager.addFile(file.getAbsolutePath());
-                                    }
+            dropZone.setOnDragDropped(event -> {
+                  Dragboard db = event.getDragboard();
+                  boolean success = false;
+                  if (db.hasFiles()) {
+                        success = true;
+                        for (File file : db.getFiles()) {
+                              String name = file.getName().toLowerCase();
+                              if (name.endsWith(".txt") || name.endsWith(".enc")) {
+                                    fileManager.addFile(file.getAbsolutePath());
                               }
                         }
-                        event.setDropCompleted(success);
-                        event.consume();
                   }
+                  event.setDropCompleted(success);
+                  event.consume();
             });
 
-            // Buttons container
             VBox buttonsContainer = new VBox(8);
             buttonsContainer.setStyle(Styles.BUTTON_CONTAINER);
 
             Button fileAdderBtn = new Button("Add File...");
             applyButtonStyle(fileAdderBtn);
-            fileAdderBtn.setOnAction(new EventHandler<ActionEvent>() {
-                  @Override
-                  public void handle(ActionEvent event) {
-                        fileManager.openFileChooser(primaryStage);
-                  }
-            });
+            fileAdderBtn.setOnAction(event -> fileManager.openFileChooser(primaryStage));
 
             Button keyAdderBtn = new Button("Set Encryption Key");
             applyButtonStyle(keyAdderBtn);
-            keyAdderBtn.setOnAction(new EventHandler<ActionEvent>() {
-                  @Override
-                  public void handle(ActionEvent event) {
-                        keyManager.showKeyWindow(primaryStage);
-                  }
-            });
+            keyAdderBtn.setOnAction(event -> keyManager.showKeyWindow(primaryStage));
 
             Button encryptBtn = new Button("Encrypt Selected");
             applyButtonStyle(encryptBtn);
-            encryptBtn.setOnAction(new EventHandler<ActionEvent>() {
-                  @Override
-                  public void handle(ActionEvent event) {
-                        String selectedFile = fileListView.getSelectionModel().getSelectedItem();
-                        if (selectedFile == null) {
-                              DialogHelper.showError("No File Selected",
-                                          "Please select a file from the list to encrypt.");
-                              return;
-                        }
-                        if (!keyManager.hasKey()) {
-                              DialogHelper.showError("No Key Set", "Please set an encryption key first!");
-                              return;
-                        }
-                        CipherSelector.show(primaryStage, new File(selectedFile), keyManager.getKey(), uiFileList,
-                                    true);
+            encryptBtn.setOnAction(event -> {
+                  String selectedFile = fileListView.getSelectionModel().getSelectedItem();
+                  if (selectedFile == null) {
+                        DialogHelper.showError("No File Selected", "Please select a file from the list to encrypt.");
+                        return;
                   }
+                  if (!keyManager.hasKey()) {
+                        DialogHelper.showError("No Key Set", "Please set an encryption key first!");
+                        return;
+                  }
+                  CipherSelector.show(primaryStage, new File(selectedFile), keyManager.getKey(), true);
             });
 
             Button decryptBtn = new Button("Decrypt Selected");
             applyButtonStyle(decryptBtn);
-            decryptBtn.setOnAction(new EventHandler<ActionEvent>() {
-                  @Override
-                  public void handle(ActionEvent event) {
-                        String selectedFile = fileListView.getSelectionModel().getSelectedItem();
-                        if (selectedFile == null) {
-                              DialogHelper.showError("No File Selected",
-                                          "Please select a file from the list to decrypt.");
-                              return;
-                        }
-                        if (!keyManager.hasKey()) {
-                              DialogHelper.showError("No Key Set", "Please set a decryption key first!");
-                              return;
-                        }
-                        try {
-                              CryptoHelper.decryptFile(new File(selectedFile), keyManager.getKey());
-                              DialogHelper.showSuccess("Decryption Complete", "File decrypted successfully!");
-                        } catch (Exception e) {
-                              DialogHelper.showError("Decryption Error", e.getMessage());
-                        }
+            decryptBtn.setOnAction(event -> {
+                  String selectedFile = fileListView.getSelectionModel().getSelectedItem();
+                  if (selectedFile == null) {
+                        DialogHelper.showError("No File Selected", "Please select a file from the list to decrypt.");
+                        return;
+                  }
+                  if (!keyManager.hasKey()) {
+                        DialogHelper.showError("No Key Set", "Please set a decryption key first!");
+                        return;
+                  }
+                  try {
+                        CryptoHelper.decryptFile(new File(selectedFile), keyManager.getKey());
+                        DialogHelper.showSuccess("Decryption Complete", "File decrypted successfully!");
+                  } catch (Exception e) {
+                        DialogHelper.showError("Decryption Error", e.getMessage());
                   }
             });
 
             buttonsContainer.getChildren().addAll(fileAdderBtn, keyAdderBtn, encryptBtn, decryptBtn);
             rightPanel.getChildren().addAll(dropZone, buttonsContainer);
 
-            // Add both panels to main container
             mainContainer.getChildren().addAll(leftPanel, rightPanel);
 
             Scene scene = new Scene(mainContainer, 750, 550);
@@ -216,11 +166,6 @@ public class Main extends Application {
             button.setOnMouseExited(e -> {
                   button.setStyle(Styles.BUTTON_NORMAL);
             });
-      }
-
-      @Override
-      public void stop() {
-            // JavaFX cleanup on exit
       }
 
       public static void main(String[] args) {

@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: Main
-Class-Path: lib/javafx.base.jar lib/javafx.controls.jar lib/javafx.graphics.jar

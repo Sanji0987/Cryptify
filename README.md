@@ -1,51 +1,48 @@
 # Cryptify
 
-A simple file encryption application with Caesar, XOR, and AES encryption support.
+Cryptify is a JavaFX desktop app for text file encryption and decryption.
 
-## Installation
+It supports three modes:
+- Caesar
+- XOR
+- AES-GCM
 
-### Linux / macOS
-1. Extract the archive
-2. Run: `./Cryptify`
+Use AES-GCM for any real data. Caesar and XOR are included for learning/demo use.
 
-### Windows
-1. Extract the archive
-2. Install Java (if not installed): https://www.java.com/download
-3. Double-click `Cryptify.bat`
+## Dev Setup
 
-**OR** run from Command Prompt:
+Requirements:
+- Java 11+
+- `7z` (used by setup script)
+
+First-time setup after clone:
+```bash
+./setup
+./compile
+./run
 ```
-Cryptify.bat
+
+Notes:
+- `setup` creates `dependencies/` and puts JavaFX files there.
+- `compile` and `run` call `setup` automatically.
+
+## Release Packaging
+
+```bash
+./package
 ```
 
-## What You Need
-
-- Java 11 or higher
-- The files must stay together:
-  - `Cryptify.jar`
-  - `Cryptify` (Linux/Mac) or `Cryptify.bat` (Windows)
-  - `lib/` folder (contains JavaFX libraries) (Extract from the 7z file)
-
-## Features
-
-- **Caesar Cipher** - Simple shift encryption
-- **XOR Cipher** - Fast bitwise encryption  
-- **AES-GCM** - Military-grade encryption with authentication
+This creates `release/<date>/` with:
+- `encryptify.jar`
+- launchers (`encryptify`, `encryptify.bat`)
+- `dependencies/`
 
 ## Usage
 
-1. Launch the application
-2. Add files to encrypt/decrypt
-3. Set your encryption key
-4. Choose your cipher method
-5. Encrypt or decrypt!
+1. Add a `.txt` file (drag/drop or file picker)
+2. Set an encryption key
+3. Encrypt or decrypt
 
-## Security Notes
+## Project Note
 
-- **AES is recommended** for important data
-- Caesar and XOR don't verify keys - wrong key = lost data!
-- Keep your encryption keys safe!
-
-## License
-
-Free to use and modify.
+Recent commits include cleanup and script updates. A lot of this work existed locally before being pushed to GitHub.
